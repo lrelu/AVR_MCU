@@ -14,6 +14,7 @@ int main(void)
 	uint8_t data;								// 스마트폰으로 부터 입력받을 변수
 
 	LCD_TurnOn();								// LCD 출력
+// LED확인을 위해 디버깅 사용
 #if 0
 	UART_START();								// UART 통신 준비 (UART0: PUTTY, UART1: 블루투스)
 #endif 
@@ -32,6 +33,36 @@ int main(void)
 	}
 
 	return 0;
+}
+
+void Keyin(uint8_t data)
+{
+	switch (data)
+	{
+		case 'S':						//STOP
+		LCD_PRINT("STOP......");
+		PORTD = 0x30;
+		break;
+		case 'F':						//FORWARD
+		LCD_PRINT("FORWARD...");
+		PORTD = 0x21;
+		break;
+		case'B':						//BACK
+		LCD_PRINT("BACK......");
+		PORTD = 0x28;
+		break;
+		case 'L':						//LEFT
+		LCD_PRINT("LEFT......");
+		PORTD = 0x22;
+		break;
+		case 'R':						//RIGHT
+		LCD_PRINT("RIGHT.....");
+		PORTD = 0x24;
+		break;
+		default:						//default
+		PORTD = 0x00;
+		break;
+	}
 }
 
 void UART_START()
@@ -56,34 +87,3 @@ void LCD_PRINT(char *str)
 	LCD_goto_XY(1, 0);
 	LCD_write_string(str);				// 문자열 출력
 }
-
-void Keyin(uint8_t data)
-{
-	switch (data)
-	{
-		case 'S':						//STOP
-			LCD_PRINT("STOP......");
-			PORTD = 0x00;
-			break;
-		case 'F':						//FORWARD
-			LCD_PRINT("FORWARD...");
-			PORTD = 0x00;
-			break;
-		case'B':						//BACK
-			LCD_PRINT("BACK......");
-			PORTD = 0x00;
-			break;
-		case 'L':						//LEFT
-			LCD_PRINT("LEFT......");
-			PORTD = 0x00;
-			break;
-		case 'R':						//RIGHT
-			LCD_PRINT("RIGHT.....");
-			PORTD = 0x00;
-			break;
-		default:						//default
-			PORTD = 0x00;
-			break;
-	}
-}
-
